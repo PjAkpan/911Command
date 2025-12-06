@@ -53,6 +53,7 @@ const getAppSecrets = () => ({
   GETAPPCODE: env.APPCODE,
   GETAPPSECRET: env.APPSECRET,
   APP_DESCRIPTION: env.APP_DESCRIPTION,
+  SHOULDENCRYPTRESPONSE: env.SHOULDENCRYPTRESPONSE,
 });
 
 
@@ -94,17 +95,7 @@ const getAppUrls = () => ({
 
 export const getAppCurrentEnvironment = () => env.NODE_ENV;
 
-const getRapidApiResource = () => ({
-  FEEDSHOST: env.FEEDSAPIURL,
-  FEEDSAPIKEY: env.FEEDSAPIKEY,
-  FEEDSAPIHOST: env.FEEDSAPIHOST,
-  RATESSURL: env.RATESSURL,
-  RATESSAPIKEY: env.RATESSAPIKEY,
-  RATESSAPIHOST: env.RATESSAPIHOST,
-  EXCHANGERATESSURL: env.EXCHANGERATESSURL,
-  SWIFTSCODE: env.SWIFTSCODE,
-  SWIFTSURL: env.SWIFTSURL,
-});
+ 
 export const getters = {
   geti18ns,
   getCurrentLanguage,
@@ -115,6 +106,5 @@ export const getters = {
   getDatabaseUrl,
   getAppUrls,
   getAppMailers,
-  getOpenAiDefinitions,
-  getRapidApiResource,
+  getOpenAiDefinitions, 
 };

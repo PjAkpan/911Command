@@ -16,9 +16,9 @@ export type Env = {
   POOL_MIN: string;
   POOL_ACQUIRE: string;
   POOL_IDLE: any;
-    DB_CONNECTION: string; 
-    DB_HOST: string;
-    DB_PORT: number;
+  DB_CONNECTION: string;
+  DB_HOST: string;
+  DB_PORT: number;
   DB_DATABASE: string;
   DB_USERNAME: string;
   DB_PASSWORD: string;
@@ -56,4 +56,5 @@ export type Env = {
   APPCODE: string;
   APPSECRET: string;
   APP_DESCRIPTION: string;
+  SHOULDENCRYPTRESPONSE:boolean;
 };

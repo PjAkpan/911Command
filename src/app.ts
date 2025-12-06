@@ -16,7 +16,8 @@ import loadRoutes from "./utils/loadRoutes";
 import path from "path";
 import compression from "compression";
 import { customMorganLogger } from "./utils"; 
-import { setupAutoSwagger } from "./middlewares/Stream_setupAutoSwagger";
+ import { setupAutoSwagger } from "./middlewares/setupAutoSwagger";
+//import { setupAutoSwagger } from "./middlewares/Stream_setupAutoSwagger";
 // import { cronJobService } from "./services/crons";
 // import { initAllSockets } from "./services/socket"; 
 
@@ -24,9 +25,10 @@ import { setupAutoSwagger } from "./middlewares/Stream_setupAutoSwagger";
 
 const app = express();
 const allowedOrigins = [
-  "http://192.168.0.104:8006", 
+  "http://192.168.0.104:8006",
   "http://localhost:3000",
-  "http://localhost:3001", 
+  "http://localhost:3001",
+  "http://localhost:8091",
 ];
 
 app.use(

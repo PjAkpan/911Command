@@ -16,7 +16,7 @@ const encryptResponseMiddleware = () => {
     // Override res.json
     (res as any).json = async (body: any): Promise<void> => {
       try {
-        if (shouldEncryptResponse(req, res)) {
+        if (getters.getAppSecrets().SHOULDENCRYPTRESPONSE == true && shouldEncryptResponse(req, res)) {
           // console.log("Response before encryption:", body);
           // console.log("Encrypting response...");
 

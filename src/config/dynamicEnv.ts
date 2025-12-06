@@ -103,5 +103,6 @@ export const env: Env & {
   APPCODE: process.env["APPCODE"]!,
   APPSECRET: process.env["APPSECRET"]!,
   APP_DESCRIPTION: process.env["APP_DESCRIPTION"]!,
+  SHOULDENCRYPTRESPONSE : process.env["SHOULD_ENCRYPT_RESPONSE"] === "true" ,
   
 };

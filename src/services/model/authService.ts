@@ -7,8 +7,10 @@ import { createHttpError, errorHandler } from "../../utils";
  const { UsersModel } = usersModel;
 
 export const registerUser = async (userData: usersSchemaType) => {
-  const { email, phone, password } = userData;
-    try {
+  const { email, phone, password } = userData; 
+   let rolesArray = null;
+  try {
+      rolesArray = JSON.stringify(["CUSTOMER"]);
       // Normalize phone and email
       const normalizedPhone = phone.startsWith("+") ? phone : `+234${phone}`;
       const normalizedEmail = email.toLowerCase();
@@ -33,6 +35,7 @@ export const registerUser = async (userData: usersSchemaType) => {
       const hashedPassword = await bcrypt.hash(password, 10);
       userData.email = normalizedEmail;
       userData.phone = normalizedPhone;
+      userData.role = rolesArray;
       const newUser = await UsersModel.create({
         ...userData,
         password: hashedPassword,

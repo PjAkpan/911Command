@@ -67,23 +67,37 @@ const loginAuthInputValidation = (data: any) =>
   loginAuthInputValidationSchema().validate(data.body, { abortEarly: false });
 const signupAuthInputValidationSchema = (): Joi.ObjectSchema =>
   Joi.object({
-    fullName: Joi.string().trim().min(2).max(50).required().messages({
-      "string.base": "fullName must be a string",
-      "string.empty": "fullName is required",
-      "string.min": "fullName must be at least 2 characters",
-      "any.required": "fullName is required",
-    }),
-    email: Joi.string().email().required().messages({
-      "string.email": "Please enter a valid email address",
-      "any.required": "Email is required",
-    }),
-    phone: Joi.string().trim().required().messages({
+    fullName: Joi.string()
+      .trim()
+      .min(2)
+      .max(50)
+      .required()
+      .example("John Doe")
+      .messages({
+        "string.base": "fullName must be a string",
+        "string.empty": "fullName is required",
+        "string.min": "fullName must be at least 2 characters",
+        "any.required": "fullName is required",
+      }),
+    email: Joi.string()
+      .email()
+      .required()
+      .example("john.doe@example.com")
+      .messages({
+        "string.email": "Please enter a valid email address",
+        "any.required": "Email is required",
+      }),
+    phone: Joi.string().trim().required().example("08012345678").messages({
       "any.required": "phone number is required",
     }),
-    address: Joi.string().trim().required().messages({
-      "any.required": "Address is required",
-    }),
-    consents: Joi.boolean().required().messages({
+    address: Joi.string()
+      .trim()
+      .required()
+      .example("12 Palm Avenue, Lagos")
+      .messages({
+        "any.required": "Address is required",
+      }),
+    consents: Joi.boolean().required().example(true).messages({
       "any.required": "consents is required",
     }),
 
@@ -94,6 +108,7 @@ const signupAuthInputValidationSchema = (): Joi.ObjectSchema =>
         ),
       )
       .required()
+      .example("Password@123")
       .messages({
         "string.pattern.base":
           "Password must be 8-19 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character",
@@ -110,4 +125,5 @@ export {
   ValidateEncrtptedValidation,
   loginAuthInputValidation,
   signupAuthInputValidation,
+  signupAuthInputValidationSchema,
 };

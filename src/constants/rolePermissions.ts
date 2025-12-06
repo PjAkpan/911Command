@@ -6,6 +6,19 @@ export const RolePermissionsMap: Record<string, rolePermissions[]> = {
     rolePermissions.CREATE,
     rolePermissions.EDIT,
   ],
+  ADMIN: [
+    rolePermissions.VIEW,
+    rolePermissions.READ,
+    rolePermissions.CREATE,
+    rolePermissions.UPDATE,
+    rolePermissions.DELETE,
+  ],
+  RESPONDER: [
+    rolePermissions.VIEW,
+    rolePermissions.READ,
+    rolePermissions.CREATE,
+    rolePermissions.EDIT,
+  ],
   INITIATOR: [
     rolePermissions.VIEW,
     rolePermissions.CREATE,
@@ -16,25 +29,12 @@ export const RolePermissionsMap: Record<string, rolePermissions[]> = {
     rolePermissions.CREATE,
     rolePermissions.EDIT,
   ],
-  ADMIN: [
-    rolePermissions.VIEW,
-    rolePermissions.READ,
-    rolePermissions.CREATE,
-    rolePermissions.UPDATE,
-    rolePermissions.DELETE,
-  ],
   SUPERADMIN: [
     rolePermissions.VIEW,
     rolePermissions.READ,
     rolePermissions.CREATE,
     rolePermissions.UPDATE,
     rolePermissions.DELETE,
-  ],
-  GOV: [
-    rolePermissions.VIEW,
-    rolePermissions.READ,
-    rolePermissions.CREATE,
-    rolePermissions.EDIT,
   ],
 };
 

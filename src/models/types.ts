@@ -23,6 +23,7 @@ export type usersSchemaType = Document &
     address: string;
     password: string;
     consents: boolean;
+    role: string;
     isVerified?: boolean;
     status?: string;
   };

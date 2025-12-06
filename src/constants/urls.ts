@@ -9,7 +9,7 @@ export const urls = {
   auth: {
     check: () => routeCreator("check"),
     createAuth: () => routeCreator("signup", "post"),
-    loginAuth: () => routeCreator("signin", "post"),
+   // loginAuth: () => routeCreator("signin", "post"),
     // logOutAuth: () => routeCreator("logout", "post"),
     // refreshTokenAuth: () => routeCreator("refresh-token", "post"),
     // forgotPasswordAuth: () => routeCreator("forgot/password", "post"),
