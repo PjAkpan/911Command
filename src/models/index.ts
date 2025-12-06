@@ -1,6 +1,6 @@
-import * as usersModel from "./users"; 
+import * as usersModel from "./users";  
 // Export all models
 export {
-
-  usersModel, 
+  usersModel,
+ 
 };

@@ -1,140 +1,96 @@
-import { Schema, model } from "mongoose"; 
-import { usersSchemaType } from "./types"; 
-
-
-const UsersSchema = new Schema(
+ 
+import { MysqlSequelizeInstance } from "../config"; 
+import { DataTypes } from "sequelize";
+ 
+const UserSchema = MysqlSequelizeInstance.define(
+  "tblusers",
   {
-    publicId: {
-      type: String,
-      unique: true,
-      sparse: true,
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true,
     },
-    companyId: {
-      type: String,
-    },
-    name: {
-      type: String,
-    },
-    picture: {
-      type: String,
+    fullName: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
     },
     email: {
-      type: String,
+      type: DataTypes.STRING(100),
+      allowNull: false,
       unique: true,
-      sparse: true,
-    },
-    password: {
-      type: String,
     },
     phone: {
-      type: String,
-      unique: true,
-      sparse: true,
-    },
-    bio: {
-      type: String,
+      type: DataTypes.STRING(20),
+      allowNull: false,
     },
     address: {
-      type: String,
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
-    country: {
-      type: String,
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    consents: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     },
     isVerified: {
-      type: Boolean,
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
+    status: {
+      type: DataTypes.ENUM("pending", "active", "disabled"),
+      defaultValue: "pending",
     },
     isProfileComplete: {
-      type: Boolean,
-      default: false,
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     },
     isPasswordChanged: {
-      type: Boolean,
-      default: true,
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: true,
     },
     isViaSocial: {
-      type: Boolean,
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
     },
     emailVerified: {
-      type: Date,
+      type: DataTypes.STRING(200),
+      allowNull: true,
+      defaultValue: false,
     },
     phoneVerified: {
-      type: Date,
+      type: DataTypes.STRING(200),
+      allowNull: true,
+      defaultValue: false,
     },
-    availableForWork: {
-      type: Boolean,
-      default: false,
-    },
-    image: {
-      type: String,
-    },
-    accounts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Account",
-      },
-    ],
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Comment",
-      },
-    ],
 
-    reports: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Report",
-      },
-    ],
-    // tokens: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "verificationToken",
-    // },
+    image: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      defaultValue: false,
+    },
 
     role: {
-      type: String,
-    },
-    Review: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Review",
-      },
-    ],
-    feedback_actions: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "FeedbackAction",
-      },
-    ],
-    userWallets: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "UserWallet",
-      },
-    ],
-    payments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Payment",
-      },
-    ],
-
-    wallet_funds: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "WalletFund",
-      },
-    ],
-    status: {
-      type: String,
-      default: "pending",
+      type: DataTypes.STRING(200),
+      allowNull: false,
     },
   },
   {
-    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
+    tableName: "tblusers",
+    timestamps: true,
+    freezeTableName: true,
   },
 );
 
-export const UsersModel = model<usersSchemaType>("Users", UsersSchema);
+//UserSchema.sync({ alter: true });
+export const UsersModel = UserSchema;
 
 

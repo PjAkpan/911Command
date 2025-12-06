@@ -16,13 +16,15 @@ export type FindInfoParams = {
 
 export type usersSchemaType = Document &
   Helpers.Timestamps & {
-    _id?: string;
-    name: string;
-    sign: string;
-    currency: string;
-    image: string;
-    status: string;
-    isActive: boolean;
+    id?: any;
+    fullName: string;
+    email: string;
+    phone: string;
+    address: string;
+    password: string;
+    consents: boolean;
+    isVerified?: boolean;
+    status?: string;
   };
 
  

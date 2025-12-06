@@ -9,5 +9,5 @@ export * from "./securityHeadersMiddleware";
 export * from "./decryptRequestMiddleware"; 
 export * from "./hasPermission"; 
 export * from "./encryptResponseMiddleware";
-export * from "./signatureProtected";
+export * from "./signatureProtected"; 
 //export * from "./setupAutoSwagger";

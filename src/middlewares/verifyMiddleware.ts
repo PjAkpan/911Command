@@ -4,7 +4,9 @@ import { logger } from "netwrap";
 import { Helpers } from "src/types/types";
 import {
   ValidateviewAllValidation, 
-  inputRequestShouldBeEncrypted,  
+  inputRequestShouldBeEncrypted,
+  loginAuthInputValidation,
+  signupAuthInputValidation,  
 } from "../utils/validate"; 
 
 
@@ -67,15 +69,15 @@ const validateVeiwAllInput = createValidationMiddleware(
   ["query"],
 );
 
-// const validateSignUpAuthRequest = createValidationMiddleware(
-//   signupAuthInputValidation,
-//   ["body"],
-// );
+const validateRegisterInput = createValidationMiddleware(
+  signupAuthInputValidation,
+  ["body"],
+);
 
-// const validateLoginAuthRequest = createValidationMiddleware(
-//   loginAuthInputValidation,
-//   ["body"],
-// );
+const validateLoginInput = createValidationMiddleware(
+  loginAuthInputValidation,
+  ["body"],
+);
 
 // const validateCreateUsersRequest = createValidationMiddleware(
 //   addusersInputValidation,
@@ -87,7 +89,9 @@ const validateVeiwAllInput = createValidationMiddleware(
 
 const verifyMiddleware = {
   validateEncrtptedInput,
-  validateVeiwAllInput, 
+  validateVeiwAllInput,
+  validateRegisterInput,
+  validateLoginInput,
 };
 
 export { verifyMiddleware };
