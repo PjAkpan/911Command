@@ -1,60 +1,231 @@
 import { usersSchemaType } from "../../models/types";
 import { usersModel } from "../../models";
-import bcrypt from "bcryptjs"; 
-import { HttpStatusCode } from "../../config";
-import { createHttpError, errorHandler } from "../../utils";
 
- const { UsersModel } = usersModel;
+import { HttpStatusCode } from "../../config";
+import { errorHandler } from "../../utils";
+
+const { UsersModel } = usersModel;
 
 export const registerUser = async (userData: usersSchemaType) => {
-  const { email, phone, password } = userData; 
-   let rolesArray = null;
   try {
-      rolesArray = JSON.stringify(["CUSTOMER"]);
-      // Normalize phone and email
-      const normalizedPhone = phone.startsWith("+") ? phone : `+234${phone}`;
-      const normalizedEmail = email.toLowerCase();
+    const newUser = await UsersModel.create({
+      ...userData,
+    });
 
-      const existingUser = await UsersModel.findOne({
-        where: { email: normalizedEmail },
-      });
+    const { password: _, ...userWithoutPassword } = newUser.toJSON();
+    return {
+      status: true,
+      statusCode: HttpStatusCode.Created,
+      message: "Users created successfully",
+      payload: userWithoutPassword,
+    };
+  } catch (err) {
+    console.error("Error creating Users:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: errorHandler(err, null).message || "Error creating Users",
+      payload: null,
+    };
+  }
+}; 
+/**
+ * Find one user with selected fields removed
+ */
+export const findOneUsers = async (filter: Record<string, any>) => {
+  try {
+    const found = await UsersModel.findOne({
+      where: filter,
+      attributes: { exclude: ["password"] }, // match EXCLUDED_FIELDS
+    });
 
-      if (existingUser) { 
-         throw createHttpError("Email already registered", 422);
-      }
+    return found
+      ? {
+          status: true,
+          statusCode: HttpStatusCode.OK,
+          message: "Users found",
+          payload: found,
+        }
+      : {
+          status: false,
+          statusCode: HttpStatusCode.NotFound,
+          message: "Users not found",
+          payload: null,
+        };
+  } catch (err) {
+    console.error("Error finding Users:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: (err as Error).message || "Error finding Users",
+      payload: null,
+    };
+  }
+};
 
-      const existingPhone = await UsersModel.findOne({
-        where: { phone: normalizedPhone },
-      });
+/**
+ * Find one user (no excluded fields)
+ */
+export const findOneUser = async (filter: Record<string, any>) => {
+  try {
+    const found = await UsersModel.findOne({
+      where: filter,
+    });
 
-      if (existingPhone) {
-        
-         throw createHttpError("Phone number already registered", 422);
-      }
+    return found
+      ? {
+          status: true,
+          statusCode: HttpStatusCode.OK,
+          message: "Users found",
+          payload: found,
+        }
+      : {
+          status: false,
+          statusCode: HttpStatusCode.NotFound,
+          message: "Users not found",
+          payload: null,
+        };
+  } catch (err) {
+    console.error("Error finding Users:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: (err as Error).message || "Error finding Users",
+      payload: null,
+    };
+  }
+};
 
-      const hashedPassword = await bcrypt.hash(password, 10);
-      userData.email = normalizedEmail;
-      userData.phone = normalizedPhone;
-      userData.role = rolesArray;
-      const newUser = await UsersModel.create({
-        ...userData,
-        password: hashedPassword,
-      });
+/**
+ * Get paginated and filtered users
+ */
+export const findAll = async (options: {
+  filter?: Record<string, any>;
+  page?: number;
+  limit?: number;
+  sort?: string | Record<string, 1 | -1>;
+}) => {
+  try {
+    const {
+      filter = {},
+      page = 1,
+      limit = 10,
+      sort = { createdAt: "DESC" }, // Sequelize uses ASC/DESC
+    } = options;
 
-      const { password: _, ...userWithoutPassword } = newUser.toJSON();
-      return {
-        status: true,
-        statusCode: HttpStatusCode.Created,
-        message: "Users created successfully",
-        payload: userWithoutPassword,
-      };
-    } catch (err) {
-      console.error("Error creating Users:", err);
+    const offset = (page - 1) * limit;
+
+    const { rows, count } = await UsersModel.findAndCountAll({
+      where: filter,
+      attributes: {
+        exclude: [
+          "password", 
+        ],
+      },
+      order: [Object.entries(sort)[0]], // convert sort object
+      offset,
+      limit,
+    });
+
+    if (rows.length === 0) {
       return {
         status: false,
-        statusCode: HttpStatusCode.InternalServerError,
-        message: errorHandler(err, null).message || "Error creating Users",
+        statusCode: HttpStatusCode.NotFound,
+        message: "No Users found",
         payload: null,
       };
     }
+
+    return {
+      status: true,
+      statusCode: HttpStatusCode.OK,
+      message: "Users retrieved successfully",
+      payload: {
+        allRecords: rows,
+        recordCount: count,
+        currentPage: page,
+        totalPages: Math.ceil(count / limit),
+        limit,
+      },
+    };
+  } catch (err) {
+    console.error("Error retrieving Users:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: (err as Error).message || "Error retrieving Users",
+      payload: null,
+    };
+  }
+};
+
+/**
+ * Delete user by ID
+ */
+export const deleteUsersById = async (id: string) => {
+  try {
+    const deleted = await UsersModel.destroy({ where: { id } });
+
+    if (!deleted) {
+      return {
+        status: false,
+        statusCode: HttpStatusCode.NotFound,
+        message: "Users not found",
+        payload: null,
+      };
+    }
+
+    return {
+      status: true,
+      statusCode: HttpStatusCode.OK,
+      message: "Users deleted successfully",
+      payload: null,
+    };
+  } catch (err) {
+    console.error("Error deleting Users:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: (err as Error).message || "Error deleting Users",
+      payload: null,
+    };
+  }
+};
+
+/**
+ * Update user using a filter
+ */
+export const updateUsersByFilter = async (
+  filter: Record<string, any>,
+  update: Record<string, any>,
+) => {
+  try {
+    const user = await UsersModel.findOne({ where: filter });
+
+    if (!user) {
+      return {
+        status: false,
+        statusCode: HttpStatusCode.NotFound,
+        message: "User not found to update",
+        payload: null,
+      };
+    }
+
+    const savedUser = await user.update(update);
+
+    return {
+      status: true,
+      statusCode: HttpStatusCode.OK,
+      message: "User updated successfully",
+      payload: savedUser,
+    };
+  } catch (err) {
+    console.error("Error updating user:", err);
+    return {
+      status: false,
+      statusCode: HttpStatusCode.InternalServerError,
+      message: (err as Error).message || "Error updating user",
+      payload: null,
+    };
+  }
 };
