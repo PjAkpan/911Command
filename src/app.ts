@@ -11,12 +11,11 @@ import {
 } from "./middlewares";
 import { logger } from "netwrap";
 import morgan from "morgan";
-import { getters, mongooseLoader, mysqlLoader } from "./config";
+import { getters,  mysqlLoader } from "./config";
 import loadRoutes from "./utils/loadRoutes"; 
 import path from "path";
 import compression from "compression";
-import { customMorganLogger } from "./utils";
-import { setupAssociations } from "./models/associations";
+import { customMorganLogger } from "./utils"; 
 import { setupAutoSwagger } from "./middlewares/setupAutoSwagger";
 // import { cronJobService } from "./services/crons";
 // import { initAllSockets } from "./services/socket"; 
@@ -45,7 +44,7 @@ app.use(
   }),
 );
 
-//setupAutoSwagger(app);
+setupAutoSwagger(app);
 
 // Apply security headers middleware
 securityHeadersMiddleware(app);

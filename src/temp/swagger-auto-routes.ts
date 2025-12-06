@@ -1,7 +1,7 @@
 
 /**
  * @swagger
- * /localhost/v3/health/check:
+ * /911command/v3/health/check:
  *   get:
  *     summary: check
  *     tags: [health]
@@ -17,7 +17,7 @@
 
 /**
  * @swagger
- * /localhost/v3/health/encrypt:
+ * /911command/v3/health/encrypt:
  *   post:
  *     summary: encrytData
  *     tags: [health]
@@ -33,7 +33,7 @@
 
 /**
  * @swagger
- * /localhost/v3/health/decrypt:
+ * /911command/v3/health/decrypt:
  *   post:
  *     summary: decryptData
  *     tags: [health]
