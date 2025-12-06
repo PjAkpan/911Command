@@ -71,3 +71,4 @@ node_modules/
 
 src/config/*.json
 *.serviceaccount.json
+emiVersion
