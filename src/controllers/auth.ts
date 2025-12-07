@@ -1,8 +1,15 @@
-import { userService } from "../services/model";
+import { otpService, userService } from "../services/model";
 import { HttpStatusCode, getters } from "../config";
 import bcrypt from "bcryptjs";
-import { createHttpError, errorHandler, responseObject } from "../utils";
+import { createHttpError, errorHandler, responseObject, sendNotificationMail } from "../utils";
 import type { RequestHandler } from "express";
+import { constants } from "../constants";
+const { typeEnum, channelTypeEnum, MailType } =
+  constants.generalConstant.en.templateData;
+
+
+
+  
 
 const checkServiceHealth: RequestHandler = (...rest) => {
   const res = rest[1];
@@ -15,7 +22,8 @@ const checkServiceHealth: RequestHandler = (...rest) => {
 };
 
 const Register: RequestHandler = async (req, res) => {
-  const { email, phone, password } = req.body;
+  const {fullName, email, phone, password } = req.body;
+  const salt: string = await bcrypt.genSalt(10);
   let userData = req.body;
   let rolesArray = null;
   try {
@@ -40,7 +48,7 @@ const Register: RequestHandler = async (req, res) => {
       throw createHttpError("Phone number already registered", 422);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, salt);
     userData.email = normalizedEmail;
     userData.phone = normalizedPhone;
     userData.role = rolesArray;
@@ -48,6 +56,40 @@ const Register: RequestHandler = async (req, res) => {
 
     const user = await userService.registerUser(userData);
     if (user.status == true && user.payload) {
+
+      const regData = await otpService.sendOtp(
+        {
+          channel: email,
+          type: typeEnum.VERIFICATION,
+          channelType: channelTypeEnum.EMAIL,
+        },
+        userData,
+      );
+      if (!regData.status) {
+        return responseObject({
+          res,
+          statusCode:
+               regData.statusCode ?? HttpStatusCode.InternalServerError,
+          message: regData?.message ?? "Failed to save save otp request",
+        });
+      }
+      await sendNotificationMail(MailType.REG_SUCCESS, {
+        name: fullName,
+        to: email,
+        cc: getters.getAppSecrets().ccEmail,
+        bcc: getters.getAppSecrets().bccEmail,
+        template: "sendEmailDefaultNew",
+        metadata: {
+          // Additional structured data if your system supports it
+          quickActions: [
+            { text: "Complete Profile", url: "/profile" },
+            { text: "Verify Email", url: "/verify-email" },
+            { text: "Help Center", url: "/help" },
+          ],
+        },
+      });
+
+
       return responseObject({
         res,
         message: user.message || "User registered successfully",

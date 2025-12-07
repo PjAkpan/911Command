@@ -72,7 +72,7 @@ const signupAuthInputValidationSchema = (): Joi.ObjectSchema =>
       .min(2)
       .max(50)
       .required()
-      .example("John Doe")
+      .example("kenneth akpan")
       .messages({
         "string.base": "fullName must be a string",
         "string.empty": "fullName is required",
@@ -82,12 +82,12 @@ const signupAuthInputValidationSchema = (): Joi.ObjectSchema =>
     email: Joi.string()
       .email()
       .required()
-      .example("john.doe@example.com")
+      .example("kennydevs@proton.me")
       .messages({
         "string.email": "Please enter a valid email address",
         "any.required": "Email is required",
       }),
-    phone: Joi.string().trim().required().example("08012345678").messages({
+    phone: Joi.string().trim().required().example("08081416695").messages({
       "any.required": "phone number is required",
     }),
     address: Joi.string()

@@ -62,7 +62,7 @@ export const env: Env & {
   POOL_MIN: process.env["POOL_MIN"]!,
   POOL_ACQUIRE: process.env["POOL_ACQUIRE"]!,
   POOL_IDLE: process.env["POOL_IDLE"]!,
-    DB_HOST: process.env[`${envPrefix}DB_HOST`]!,
+  DB_HOST: process.env[`${envPrefix}DB_HOST`]!,
   DB_PORT: Number(process.env[`${envPrefix}DB_PORT`]),
   DB_CONNECTION: process.env[`${envPrefix}DB_CONNECTION`]!,
   DB_DATABASE: process.env[`${envPrefix}DB_DATABASE`]!,

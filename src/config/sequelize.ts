@@ -24,10 +24,10 @@ export const MysqlSequelizeInstance = new Sequelize(
     },
     pool: {
       max: parseInt(getters.getDatabaseUrl().MAX),
-    min: parseInt(getters.getDatabaseUrl().MIN),
-    acquire: parseInt(getters.getDatabaseUrl().ACQUIRE),
-  idle:10000,
-// parsed as number
+      min: parseInt(getters.getDatabaseUrl().MIN),
+      acquire: parseInt(getters.getDatabaseUrl().ACQUIRE),
+      idle:10000,
+      // parsed as number
     },
     define: {
       timestamps: true,

@@ -16,7 +16,7 @@ import loadRoutes from "./utils/loadRoutes";
 import path from "path";
 import compression from "compression";
 import { customMorganLogger } from "./utils"; 
- import { setupAutoSwagger } from "./middlewares/setupAutoSwagger";
+import { setupAutoSwagger } from "./middlewares/setupAutoSwagger";
 //import { setupAutoSwagger } from "./middlewares/Stream_setupAutoSwagger";
 // import { cronJobService } from "./services/crons";
 // import { initAllSockets } from "./services/socket"; 

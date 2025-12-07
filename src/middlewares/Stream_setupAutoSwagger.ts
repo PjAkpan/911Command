@@ -95,11 +95,11 @@ const generateSwaggerComments = (): void => {
         const parametersSection =
           pathParams.length > 0
             ? `parameters:\n${pathParams
-                .map(
-                  (p) =>
-                    ` *       - in: path\n *         name: ${p}\n *         required: true\n *         schema:\n *           type: string\n *         description: ${p}`,
-                )
-                .join("\n")}`
+              .map(
+                (p) =>
+                  ` *       - in: path\n *         name: ${p}\n *         required: true\n *         schema:\n *           type: string\n *         description: ${p}`,
+              )
+              .join("\n")}`
             : "";
 
         let requestBodySection = "";

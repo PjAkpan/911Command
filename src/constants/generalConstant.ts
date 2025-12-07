@@ -63,5 +63,27 @@ export const generalConstant = {
         FAILED: "FAILED",
       },
     },
+    templateData: {
+      typeEnum: {
+        VERIFICATION: "verification",
+        RESET: "reset",
+        TWOFA: "2fa",
+      },
+      MailType: {
+        REG_SUCCESS: "REG_SUCCESS",
+        BOOK_SUCCESS: "BOOK_SUCCESS",       
+        BOOK_STATUS_UPDATE: "BOOK_STATUS_UPDATE",
+        BOOK_PAYMENT_SUCCESS: "BOOK_PAYMENT_SUCCESS",
+        BOOK_PAYMENT_FAILED: "BOOK_PAYMENT_FAILED",
+        BOOK_EXPIRED: "BOOK_EXPIRED",
+        TICKET_CONFIRMED: "TICKET_CONFIRMED",
+        INSUFFICIENT_TRANSACTION_AMOUNT: "INSUFFICIENT_TRANSACTION_AMOUNT",
+        TOO_MUCH_TRANSACTION_AMOUNT: "TOO_MUCH_TRANSACTION_AMOUNT",
+      },
+      channelTypeEnum: {
+        PHONE: "phone",
+        EMAIL: "email",
+      },
+    },
   },
 };

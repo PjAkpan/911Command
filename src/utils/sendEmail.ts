@@ -5,7 +5,8 @@ import path from "path";
 import { replaceVariables } from "./helpers";
 import { logger } from "netwrap";
 import nodemailer from "nodemailer";
-//import { notificationsModel } from "../models";
+import { constants } from "../constants";
+import { getNotificationTemplateData } from "../templates/templateData";
 
 
 
@@ -110,7 +111,73 @@ const sendEmail = async (mailConfigs: any) => {
     // throw error;
   }
 };
-export { sendEmail };
+
+const sendNotificationMail = async (
+  type: (typeof constants.generalConstant.en.templateData.MailType)[keyof typeof constants.generalConstant.en.templateData.MailType],
+  receiver: any,
+) => {
+  try {
+    const { mailSubject, mailBody }: any = getNotificationTemplateData({
+      data: receiver,
+      type,
+    });
+
+    const variables: any = {
+      content: mailBody,
+      getFullYear: new Date().getFullYear(),
+    };
+    const source = fs.readFileSync(
+      path.join("src/templates/email", receiver.template + ".hbs"),
+      "utf8",
+    );
+
+    const emailHtmlPayload = await replaceVariables(source, variables);
+
+    const emailPayload = {
+      html: emailHtmlPayload,
+      subject: mailSubject,
+      to: receiver.to,
+      cc: receiver.cc,
+      bcc: receiver.bcc,
+      from: `"${getters.getAppMailers().mailSentFrom}" <${getters.getAppMailers().mailSentFrom}>`,
+    };
+    // Convert recipients to array if they're strings
+    const toRecipients = Array.isArray(emailPayload.to)
+      ? emailPayload.to
+      : [emailPayload.to];
+
+    // Send to primary recipients
+    const primaryMailOptions = {
+      ...emailPayload,
+      to: toRecipients.join(", "),
+      cc: emailPayload.cc
+        ? Array.isArray(emailPayload.cc)
+          ? emailPayload.cc.join(", ")
+          : emailPayload.cc
+        : undefined,
+      bcc: emailPayload.bcc
+        ? Array.isArray(emailPayload.bcc)
+          ? emailPayload.bcc.join(", ")
+          : emailPayload.bcc
+        : undefined,
+    };
+
+    const info = await transporter.sendMail(primaryMailOptions);
+    // Handle the result from SendMailV2
+    if (info) {
+      console.log("Email sent successfully!", info);
+      return true;
+    } else {
+      console.log("Failed to send email:", info);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error sending mail:", error);
+    return false;
+  }
+};
+
+export { sendEmail, sendNotificationMail };
 
 
 

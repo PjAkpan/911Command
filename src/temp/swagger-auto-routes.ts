@@ -82,16 +82,16 @@
  *                   "type": "string",
  *                   "minLength": 2,
  *                   "maxLength": 50,
- *                   "example": "John Doe"
+ *                   "example": "kenneth akpan"
  *                 },
  *                 "email": {
  *                   "type": "string",
  *                   "format": "email",
- *                   "example": "john.doe@example.com"
+ *                   "example": "kennydevs@proton.me"
  *                 },
  *                 "phone": {
  *                   "type": "string",
- *                   "example": "08012345678"
+ *                   "example": "08081416695"
  *                 },
  *                 "address": {
  *                   "type": "string",

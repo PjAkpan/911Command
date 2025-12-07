@@ -10,5 +10,5 @@ import {
 export const joiSchemasMap: Record<string, Function> = {
   validateVeiwAllInput: ValidateviewAllValidation,
   validateEncrtptedInput: inputRequestShouldBeEncrypted,
- validateRegisterInput: signupAuthInputValidationSchema,
+  validateRegisterInput: signupAuthInputValidationSchema,
 };

@@ -113,6 +113,46 @@ export type FindInfoParams = {
   endDate?: string;
 };
 
-export type UserRoles = "CUSTOMER" | "GOV" | "ADMIN" | "SUPERADMIN";
+export type UserRoles = "RESPONDER" | "CUSTOMER" | "GOV" | "ADMIN" | "SUPERADMIN";
 
 }
+
+
+export enum typeEnum {
+  VERIFICATION = "verification",
+  RESET = "reset",
+  TWOFA = "2fa",
+}
+export type GetOtpTemplateDataType = {
+  otp: string;
+  type: (typeof typeEnum)[keyof typeof typeEnum];
+};
+
+export type userOnboardingTemplateData = {
+  names: string;
+  password: string;
+  role: string;
+};
+
+export type sessionBookingNotificationTemplateData = {
+  bookingReference: string;
+  user: {
+    fullname: string;
+    email: string;
+  };
+  flightDetails: {
+    flightNumber: string;
+    departure: string;
+    arrival: string;
+    date: string;
+    time: string;
+    id: string;
+    status: string;
+    fullname: string;
+    origin: string;
+    destination: string;
+  };
+  passengerName: string;
+  additionalInfo?: string;
+};
+ 

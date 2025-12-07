@@ -28,5 +28,15 @@ export type usersSchemaType = Document &
     status?: string;
   };
 
- 
- 
+export type otpSchemaType = Document &
+  Helpers.Timestamps & {
+    _id?: string;
+    userId: string;
+    otp: string;
+    accessToken: string;
+    userCode: string;
+    publicId?: string;
+    channel: string;
+    type: string;
+    channelType: string;
+  };

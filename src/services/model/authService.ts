@@ -12,7 +12,7 @@ export const registerUser = async (userData: usersSchemaType) => {
       ...userData,
     });
 
-    const { password: _, ...userWithoutPassword } = newUser.toJSON();
+    const {  ...userWithoutPassword } = newUser.toJSON();
     return {
       status: true,
       statusCode: HttpStatusCode.Created,
@@ -41,17 +41,17 @@ export const findOneUsers = async (filter: Record<string, any>) => {
 
     return found
       ? {
-          status: true,
-          statusCode: HttpStatusCode.OK,
-          message: "Users found",
-          payload: found,
-        }
+        status: true,
+        statusCode: HttpStatusCode.OK,
+        message: "Users found",
+        payload: found,
+      }
       : {
-          status: false,
-          statusCode: HttpStatusCode.NotFound,
-          message: "Users not found",
-          payload: null,
-        };
+        status: false,
+        statusCode: HttpStatusCode.NotFound,
+        message: "Users not found",
+        payload: null,
+      };
   } catch (err) {
     console.error("Error finding Users:", err);
     return {
@@ -74,17 +74,17 @@ export const findOneUser = async (filter: Record<string, any>) => {
 
     return found
       ? {
-          status: true,
-          statusCode: HttpStatusCode.OK,
-          message: "Users found",
-          payload: found,
-        }
+        status: true,
+        statusCode: HttpStatusCode.OK,
+        message: "Users found",
+        payload: found,
+      }
       : {
-          status: false,
-          statusCode: HttpStatusCode.NotFound,
-          message: "Users not found",
-          payload: null,
-        };
+        status: false,
+        statusCode: HttpStatusCode.NotFound,
+        message: "Users not found",
+        payload: null,
+      };
   } catch (err) {
     console.error("Error finding Users:", err);
     return {
