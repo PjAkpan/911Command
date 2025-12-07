@@ -25,7 +25,7 @@ export const sendOtp = async (data: Partial<otpSchemaType>,requestData?:any) => 
       status: true,
       statusCode: HttpStatusCode.Created,
       message: "otp request created successfully",
-      payload: created,
+      payload: created as any,
     };
   } catch (err) {
     console.error("Error creating otp request:", err);

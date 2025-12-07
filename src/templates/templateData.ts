@@ -10,14 +10,14 @@ import {
 } from "../types";
 
 
-export const getOtpTemplateData = ({ otp, type }: GetOtpTemplateDataType) => {
+export const getOtpTemplateData = ({ data, type }: GetOtpTemplateDataType) => {
   if (type === typeEnum.VERIFICATION) {
     return {
       mailSubject: "Email Verification",
       mailBody: `
 				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">Hi, User</p>
 				<p>OTP for your email verification is :</p>
-				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${otp}</p>
+				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${data.otp}</p>
 				<p>This OTP is valid for only 10 minutes</p>
 			`,
     };
@@ -27,7 +27,7 @@ export const getOtpTemplateData = ({ otp, type }: GetOtpTemplateDataType) => {
       mailBody: `
 				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">Hi, User</p>
 				<p>OTP for your password reset request is :</p>
-				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${otp}</p>
+				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${data.otp}</p>
 				<p>This OTP is valid for only 10 minutes</p>
 			`,
     };
@@ -37,7 +37,7 @@ export const getOtpTemplateData = ({ otp, type }: GetOtpTemplateDataType) => {
       mailBody: `
 				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">Hi, User</p>
 				<p>OTP for your 2FA is :</p>
-				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${otp}</p>
+				<p style="font-weight: 600; font-size: 18px; margin-bottom: 0;">${data.otp}</p>
 				<p>This OTP is valid for only 10 minutes</p>
 			`,
     };

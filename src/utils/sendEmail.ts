@@ -4,9 +4,8 @@ import path from "path";
 // import { parseString } from "xml2js";
 import { replaceVariables } from "./helpers";
 import { logger } from "netwrap";
-import nodemailer from "nodemailer";
-import { constants } from "../constants";
-import { getNotificationTemplateData } from "../templates/templateData";
+import nodemailer from "nodemailer"; 
+import { getNotificationTemplateData, getOtpTemplateData } from "../templates/templateData";
 
 
 
@@ -113,14 +112,36 @@ const sendEmail = async (mailConfigs: any) => {
 };
 
 const sendNotificationMail = async (
-  type: (typeof constants.generalConstant.en.templateData.MailType)[keyof typeof constants.generalConstant.en.templateData.MailType],
+  type: any,
   receiver: any,
 ) => {
   try {
-    const { mailSubject, mailBody }: any = getNotificationTemplateData({
+    const templateHandlers: any = {
+      notification: getNotificationTemplateData,
+      otp: getOtpTemplateData,
+      //   invoice: getInvoiceTemplateData,
+      //   alert: getAlertTemplateData,
+      // add more handlers here later
+    };
+
+    // Pick handler based on receiver.templateType or type
+    const handler = templateHandlers[receiver.templateType || "notification"];
+
+    if (!handler) {
+      throw new Error(
+        `No template handler found for: ${receiver.templateType}`,
+      );
+    }
+
+    const { mailSubject, mailBody } = handler({
       data: receiver,
       type,
     });
+
+    // const { mailSubject, mailBody }: any = getNotificationTemplateData({
+    //   data: receiver,
+    //   type,
+    // });
 
     const variables: any = {
       content: mailBody,

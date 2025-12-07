@@ -126,6 +126,7 @@ export enum typeEnum {
 export type GetOtpTemplateDataType = {
   otp: string;
   type: (typeof typeEnum)[keyof typeof typeEnum];
+  data:{otp:string}
 };
 
 export type userOnboardingTemplateData = {

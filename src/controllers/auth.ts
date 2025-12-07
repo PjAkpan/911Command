@@ -87,6 +87,25 @@ const Register: RequestHandler = async (req, res) => {
             { text: "Help Center", url: "/help" },
           ],
         },
+        templateType: "notification",
+      });
+
+      await sendNotificationMail(typeEnum.VERIFICATION, {
+        name: fullName,
+        to: email,
+        cc: getters.getAppSecrets().ccEmail,
+        bcc: getters.getAppSecrets().bccEmail,
+        template: "sendEmailDefaultNew",
+        metadata: {
+          // Additional structured data if your system supports it
+          quickActions: [
+            { text: "Complete Profile", url: "/profile" },
+            { text: "Verify Email", url: "/verify-email" },
+            { text: "Help Center", url: "/help" },
+          ],
+        },
+        templateType: "otp",
+        otp: regData.payload?.otp,
       });
 
 
