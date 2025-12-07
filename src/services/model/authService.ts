@@ -12,7 +12,9 @@ export const registerUser = async (userData: usersSchemaType) => {
       ...userData,
     });
 
-    const {  ...userWithoutPassword } = newUser.toJSON();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userWithoutPassword } = newUser.toJSON();
+    
     return {
       status: true,
       statusCode: HttpStatusCode.Created,
