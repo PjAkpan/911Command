@@ -5,7 +5,7 @@ const typescriptEslint = require("@typescript-eslint/eslint-plugin");
 module.exports = [
   {
     // Lint all .ts, .tsx, .js, .jsx files
-    files: ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+    files: ["**/*.ts",  "**/*.js"],
     ignores: ["node_modules/**", "dist/**", "build/**", ".env"],
     languageOptions: {
       ecmaVersion: "latest", // Specify ECMAScript version

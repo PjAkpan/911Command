@@ -1,7 +1,7 @@
 {
-  "name": "travoofy-api-v2",
+  "name": "911command-api-v2",
   "version": "1.0.0",
-  "description": "travoofy-api-v2",
+  "description": "911command-api-v2",
   "main": "app.js",
   "scripts": {
     "test": "jest",
@@ -16,7 +16,7 @@
     "audit": "npm audit fix",
     "build:types": "tsc --emitDeclarationOnly --declarationDir build",
     "build:js": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps inline",
-    "lint": "eslint eslint.config.js src/**/*.{jsx,ts,tsx} --fix",
+    "lint": "eslint eslint.config.js src/**/*.{js,ts,tsx} --fix",
     "update-deps": "npx npm-check-updates -u && npm install",
     "check-deps": "depcheck",
     "mvc": "tsc ./generate-service.ts && node generate-service.js",
@@ -24,8 +24,8 @@
     "start:dev": "cross-env NODE_ENV=staging nodemon --files ./src/app.ts",
     "start:prod": "cross-env NODE_ENV=production node -r dotenv/config ./build/app.js",
     "seed": "nodemon ./src/services/crons/seeder/mainSeeder.ts",
-    "pm2:prod": "pm2 start pm2system.config.js  --only travoofy_api_production",
-    "pm2:dev": "pm2 start pm2system.config.js --only travoofy_api_development"
+    "pm2:prod": "pm2 start pm2system.config.js  --only 911command_api_production",
+    "pm2:dev": "pm2 start pm2system.config.js --only 911command_api_development"
   },
   "keywords": [],
   "author": "kennyendowed",

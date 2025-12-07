@@ -35,7 +35,7 @@ RUN npm install --omit=dev
 USER node
 
 # Expose the app port
-EXPOSE 8021
+EXPOSE 8091
 
 # Run the app
 CMD ["npm", "run", "dev","start:dev","start:prod"]
