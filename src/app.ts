@@ -127,9 +127,15 @@ loadRoutes(routeFolder, app, basePath, environ,undefined, false)
       res.status(500).json({ message: "Internal Server Error" });
     });
     // console.log(app._router.stack.map((layer: { route: { path: any; }; }) => layer.route?.path));
-    app.listen(port, () => {
-      logger(`${getters.geti18ns().LOGS.RUNNING_APP} ${port}`);
-      logger(`Running on - ${getters.getNodeEnv()}`);
-    });
+    if (!process.env.VERCEL) {
+      // Local development only
+      app.listen(port, () => {
+        logger(`${getters.geti18ns().LOGS.RUNNING_APP} ${port}`);
+        logger(`Running on - ${getters.getNodeEnv()}`);
+      });
+    }
+
+
   })
   .catch((err) => console.error("Error loading routes:", err));
+module.exports = app;

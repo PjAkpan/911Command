@@ -107,7 +107,7 @@ const Register: RequestHandler = async (req, res) => {
   } catch (error) {
     return responseObject({
       res,
-      statusCode: HttpStatusCode.InternalServerError,
+      statusCode:(error as any).status || HttpStatusCode.InternalServerError,
       message: errorHandler(error, null).message,
     });
   }

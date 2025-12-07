@@ -1,7 +1,7 @@
 
 /**
  * @swagger
- * /911command/v3/health/check:
+ * /healthCare/v3/health/check:
  *   get:
  *     summary: check
  *     tags: [health]
@@ -17,7 +17,7 @@
 
 /**
  * @swagger
- * /911command/v3/health/encrypt:
+ * /healthCare/v3/health/encrypt:
  *   post:
  *     summary: encrytData
  *     tags: [health]
@@ -33,7 +33,7 @@
 
 /**
  * @swagger
- * /911command/v3/health/decrypt:
+ * /healthCare/v3/health/decrypt:
  *   post:
  *     summary: decryptData
  *     tags: [health]
@@ -49,7 +49,7 @@
 
 /**
  * @swagger
- * /911command/v3/auth/check:
+ * /healthCare/v3/auth/check:
  *   get:
  *     summary: check
  *     tags: [auth]
@@ -65,7 +65,7 @@
 
 /**
  * @swagger
- * /911command/v3/auth/signup:
+ * /healthCare/v3/auth/signup:
  *   post:
  *     summary: createAuth
  *     tags: [auth]
