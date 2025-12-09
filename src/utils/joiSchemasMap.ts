@@ -2,6 +2,7 @@ import {
   ValidateviewAllValidation,
   inputRequestShouldBeEncrypted,
   signupAuthInputValidationSchema,
+  loginAuthInputValidationSchema,
 } from "./validate";
 
 /**
@@ -11,4 +12,5 @@ export const joiSchemasMap: Record<string, Function> = {
   validateVeiwAllInput: ValidateviewAllValidation,
   validateEncrtptedInput: inputRequestShouldBeEncrypted,
   validateRegisterInput: signupAuthInputValidationSchema,
+  validateLoginInput: loginAuthInputValidationSchema,
 };

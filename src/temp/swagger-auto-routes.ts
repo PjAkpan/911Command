@@ -126,3 +126,44 @@
  *         description: Unauthorized
  */
         
+
+/**
+ * @swagger
+ * /healthCare/v3/auth/signin:
+ *   post:
+ *     summary: loginAuth
+ *     tags: [auth]
+ *     
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             {
+ *               "type": "object",
+ *               "properties": {
+ *                 "email": {
+ *                   "type": "string",
+ *                   "format": "email",
+ *                   "example": "kennydevs@proton.me"
+ *                 },
+ *                 "password": {
+ *                   "type": "string",
+ *                   "example": "Password@123"
+ *                 }
+ *               },
+ *               "required": [
+ *                 "email",
+ *                 "password"
+ *               ],
+ *               "additionalProperties": false
+ *             }
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ */
+        

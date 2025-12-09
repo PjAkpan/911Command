@@ -1,7 +1,7 @@
 import { otpService, userService } from "../services/model";
 import { HttpStatusCode, getters } from "../config";
 import bcrypt from "bcryptjs";
-import { createHttpError, errorHandler, responseObject, sendNotificationMail } from "../utils";
+import { createHttpError, errorHandler, generateAccessToken, responseObject, sendNotificationMail } from "../utils";
 import type { RequestHandler } from "express";
 import { constants } from "../constants";
 const { typeEnum, channelTypeEnum, MailType } =
@@ -132,7 +132,63 @@ const Register: RequestHandler = async (req, res) => {
   }
 };
 
+const  Login : RequestHandler = async (req, res) => {
+  const { email, password } = req.body;
+  let payload = null;
+  try {
+    const userExists = await userService.findOneUser({ email: email });
+
+    if (userExists.status == false) {
+      return responseObject({
+        res,
+        statusCode: HttpStatusCode.NotFound,
+        message: `user with email ${email}   not found`,
+        payload,
+      });
+    }
+    const isPasswordValid = bcrypt.compareSync(
+      password,
+      (userExists.payload as any)?.password ?? "",
+    );
+    if (!isPasswordValid) {
+      return responseObject({
+        res,
+        statusCode: HttpStatusCode.Unauthorized,
+        message: "Invalid login credentials",
+      });
+    }
+    const token = await generateAccessToken(
+      {
+        publicId: (userExists.payload as any)?.id,
+        // userId: userExists.payload?._id,
+        name: (userExists.payload as any)?.fullName,
+        role: (userExists.payload as any)?.role,
+        isVerified: (userExists.payload as any)?.isVerified,
+      },
+      "LOGIN",
+      "10m",
+    );
+
+    return responseObject({
+      res,
+      statusCode: HttpStatusCode.OK,
+      message: "Login successfully",
+      payload: token,
+    });
+  
+  } catch (error) {
+  
+    return responseObject({
+      res,
+      statusCode:(error as any).status || HttpStatusCode.InternalServerError,
+      message: errorHandler(error, null).message,
+    });
+
+  }
+};
+
 export default {
   checkServiceHealth,
   Register,
+  Login,
 };

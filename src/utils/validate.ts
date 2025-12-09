@@ -54,11 +54,18 @@ const inputRequestShouldBeEncrypted = (data: any) => {
 
 const loginAuthInputValidationSchema = (): Joi.ObjectSchema =>
   Joi.object({
-    email: Joi.string().email().required().messages({
-      "string.email": "Please enter a valid email address",
-      "any.required": "Email is required",
-    }),
-    password: Joi.string().trim().required().messages({
+    // identifier: Joi.string().trim().required().messages({
+    //   "any.required": "Identifier is required",
+    // }),
+    email: Joi.string()
+      .email()
+      .required()
+      .example("kennydevs@proton.me")
+      .messages({
+        "string.email": "Please enter a valid email address",
+        "any.required": "Email is required",
+      }),
+    password: Joi.string().trim().required().example("Password@123").messages({
       "any.required": "Password is required",
     }),
   });
@@ -126,4 +133,5 @@ export {
   loginAuthInputValidation,
   signupAuthInputValidation,
   signupAuthInputValidationSchema,
+  loginAuthInputValidationSchema,
 };
