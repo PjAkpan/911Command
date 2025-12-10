@@ -13,12 +13,18 @@ const serviceLoader: RouteHandler[] = [
   {
     path: joinUrls([constants.urls.auth.createAuth().path]),
     method: constants.urls.auth.createAuth().method,
-    handlers: [verifyMiddleware.validateRegisterInput, controllers.auth.Register],
+    handlers: [
+      verifyMiddleware.validateRegisterInput,
+      controllers.auth.Register,
+    ],
   },
   {
     path: joinUrls([constants.urls.auth.loginAuth().path]),
     method: constants.urls.auth.loginAuth().method,
-    handlers: [verifyMiddleware.validateLoginInput, controllers.auth.Login],
+    handlers: [
+      verifyMiddleware.verifyActiveStatus,verifyMiddleware.validateLoginInput,
+      controllers.auth.Login,
+    ],
   },
 ];
 

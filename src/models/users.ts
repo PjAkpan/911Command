@@ -82,6 +82,18 @@ const UserSchema = MysqlSequelizeInstance.define(
       type: DataTypes.STRING(200),
       allowNull: false,
     },
+    referralCode: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    referralUrl: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    refreshToken: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
   },
   {
     tableName: "tblusers",

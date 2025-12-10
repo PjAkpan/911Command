@@ -8,6 +8,8 @@ import {
   loginAuthInputValidation,
   signupAuthInputValidation,  
 } from "../utils/validate"; 
+import { userService } from "../services/model";
+import { HttpStatusCode } from "../config";
 
 
 const createValidationMiddleware = (
@@ -57,6 +59,38 @@ const createValidationMiddleware = (
     }
   };
 };
+
+const verifyActiveStatus: RequestHandler = async (req, res, next) => {
+  let payload = {};
+  try {
+    const { email } = req.body;
+    // Simulate fetching user from database
+    const userExists = await userService.findOneUser({ email: email });
+    
+    if (userExists.status == false) {
+      return responseObject({
+        res,
+        statusCode: HttpStatusCode.NotFound,
+        message: `user with email ${email}   not found`,
+        payload,
+      });
+    }
+ 
+    if (userExists.payload && (userExists.payload as any).status != "active") {
+      throw createHttpError("User is not active", 403);
+    }
+
+    next();
+  }
+  catch (err) {
+    logger(err, { shouldLog: true, isError: true });
+    return responseObject({
+      res,
+      statusCode: (err as any).status || 500,
+      message: errorHandler(err as Error, null)?.message || "Internal Server Error",
+    });
+  }
+};
  
 
 const validateEncrtptedInput = createValidationMiddleware(
@@ -92,6 +126,7 @@ const verifyMiddleware = {
   validateVeiwAllInput,
   validateRegisterInput,
   validateLoginInput,
+  verifyActiveStatus,
 };
 
 export { verifyMiddleware };

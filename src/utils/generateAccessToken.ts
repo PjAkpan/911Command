@@ -1,5 +1,6 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import { getters } from "../config";  
+import { userService } from "../services/model";
 
 
 
@@ -61,6 +62,10 @@ export const generateAccessToken = async (
     ]
     : tokensToSave;
   console.log("filteredTokensToSave", filteredTokensToSave);
+  await userService.updateUsersByFilter(
+    { id: payload.publicId },
+    { refreshToken: refreshToken },
+  );
   // await Promise.all(
   //   filteredTokensToSave.map(({ token, identifier, expires }) =>
   //     verificationTokenModel.saveVerificationToken({

@@ -1,15 +1,13 @@
 import { otpService, userService } from "../services/model";
 import { HttpStatusCode, getters } from "../config";
 import bcrypt from "bcryptjs";
-import { createHttpError, errorHandler, generateAccessToken, responseObject, sendNotificationMail } from "../utils";
+import { createHttpError, errorHandler, generateAccessToken, generateReferralCode, responseObject, sendNotificationMail } from "../utils";
 import type { RequestHandler } from "express";
 import { constants } from "../constants";
 const { typeEnum, channelTypeEnum, MailType } =
   constants.generalConstant.en.templateData;
 
 
-
-  
 
 const checkServiceHealth: RequestHandler = (...rest) => {
   const res = rest[1];
@@ -26,6 +24,9 @@ const Register: RequestHandler = async (req, res) => {
   const salt: string = await bcrypt.genSalt(10);
   let userData = req.body;
   let rolesArray = null;
+  const REFERRAL_BASE_URL =getters.getAppUrls().frontendUrl || "http://192.168.1.150:8080/signup";
+
+  
   try {
     rolesArray = JSON.stringify(["CUSTOMER"]);
     // Normalize phone and email
@@ -47,12 +48,14 @@ const Register: RequestHandler = async (req, res) => {
     if (existingPhone.status) {
       throw createHttpError("Phone number already registered", 422);
     }
-
+    const referralCode =await generateReferralCode();
     const hashedPassword = await bcrypt.hash(password, salt);
     userData.email = normalizedEmail;
     userData.phone = normalizedPhone;
     userData.role = rolesArray;
     userData.password = hashedPassword;
+    userData.referralCode= referralCode;
+    userData.referralUrl= `${REFERRAL_BASE_URL}?ref=${referralCode}`;
 
     const user = await userService.registerUser(userData);
     if (user.status == true && user.payload) {
@@ -160,10 +163,14 @@ const  Login : RequestHandler = async (req, res) => {
     const token = await generateAccessToken(
       {
         publicId: (userExists.payload as any)?.id,
-        // userId: userExists.payload?._id,
+        email: (userExists.payload as any)?.email,
+        phone: (userExists.payload as any)?.phone,
         name: (userExists.payload as any)?.fullName,
         role: (userExists.payload as any)?.role,
         isVerified: (userExists.payload as any)?.isVerified,
+        status: (userExists.payload as any)?.status,
+        referralCode: (userExists.payload as any)?.referralCode,
+        referralUrl: (userExists.payload as any)?.referralUrl,
       },
       "LOGIN",
       "10m",
@@ -172,12 +179,13 @@ const  Login : RequestHandler = async (req, res) => {
     return responseObject({
       res,
       statusCode: HttpStatusCode.OK,
-      message: "Login successfully",
+      message: "Signed in successfully",
       payload: token,
     });
   
   } catch (error) {
   
+    console.error("SIGNIN ERROR:", error);
     return responseObject({
       res,
       statusCode:(error as any).status || HttpStatusCode.InternalServerError,
